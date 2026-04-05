@@ -217,11 +217,10 @@ class RiemannianAnalysis:
             )
         n_rows = self._data.shape[0]
         riemannian_diff = np.zeros((n_rows, n_rows, self._data.shape[1]))
-        for i in range(n_rows):
-            for j in range(n_rows):
-                riemannian_diff[i, j] = self.rho[i, j] * (
-                    self._data.iloc[i] - self._data.iloc[j]
-                )
+        data_values = self._data.values
+        riemannian_diff = self.rho[:, :, np.newaxis] * (
+            data_values[:, np.newaxis, :] - data_values[np.newaxis, :, :]
+        )
         return riemannian_diff
 
     def __calculate_umap_distance_matrix(self) -> np.ndarray:
